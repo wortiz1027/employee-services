@@ -1,0 +1,33 @@
+# +-----------------------------------------------------
+# |         SERVER CONFIG
+# +-----------------------------------------------------
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        name: UISESSION
+
+# +-----------------------------------------------------
+# |         SPRING CONFIG
+# +-----------------------------------------------------
+spring:
+  application:
+    name: employee-services
+  profiles:
+    active: "@activatedProperties@"
+  jackson:
+    serialization:
+      INDENT_OUTPUT: false
+
+# +-----------------------------------------------------
+# |         MONITORING CONFIG
+# +-----------------------------------------------------
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      base-path: /monitor/actuator
+      exposure:
+        include: "*"

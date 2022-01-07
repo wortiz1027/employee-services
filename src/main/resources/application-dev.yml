@@ -1,0 +1,26 @@
+# +-----------------------------------------------------
+# |         SPRING DATASOURCE CONFIG
+# +-----------------------------------------------------
+spring:
+  r2dbc:
+    url: r2dbc:pool:mysql://${DB_ML_CHALLENGE_HOST:localhost}:3306/employees
+    username: ${DB_EMPLOYEES_USERNAME:employees}
+    password: ${DB_EMPLOYEES_PASSWORD:a56e7535-fde4-419b-8556-fd6736e22254}
+    pool:
+      initial-size: 5
+      max-size: 20
+      max-idle-time: 35m
+      validation-query: SELECT 1
+
+# +-----------------------------------------------------
+# |         SPRING LOGGIN CONFIG
+# +-----------------------------------------------------
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.web.client.RestTamplate: DEBUG
+    org.springframework.data.r2dbc: DEBUG
+    co.com.merdadolibre.challenge: DEBUG
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
