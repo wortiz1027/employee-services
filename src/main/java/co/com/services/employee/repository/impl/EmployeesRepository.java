@@ -2,7 +2,6 @@ package co.com.services.employee.repository.impl;
 
 import co.com.services.employee.domain.Employee;
 import co.com.services.employee.exceptions.EmployeeInformationNotFound;
-import co.com.services.employee.exceptions.EmployeesInformationNotFound;
 import co.com.services.employee.mapper.EmployeeMapper;
 import co.com.services.employee.repository.IEmployeesRepository;
 import lombok.RequiredArgsConstructor;

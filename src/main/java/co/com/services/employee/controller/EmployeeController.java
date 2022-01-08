@@ -33,7 +33,7 @@ public class EmployeeController {
         String regex = "[0-9]+";
 
         if (!code.matches(regex))
-            throw new EmployeeCodeValueException(String.format("Invalid value: '%s', for employee code: ", code));
+            throw new EmployeeCodeValueException(String.format("Invalid value: '%s', for employee code", code));
 
         var response = this.service.employeesDetailsByCode(Long.parseLong(code)).get();
         return new ResponseEntity<>(response, HttpStatus.OK);
