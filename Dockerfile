@@ -25,18 +25,18 @@ ARG BUILD_VERSION
 ARG BUILD_REVISION
 
 ENV APP_HOME="/app" \
-	HTTP_PORT=8080 \
+    HTTP_PORT=8080 \
     MONITO_PORT=9090
 
 # Informacion de la persona que mantiene la imagen
 LABEL org.opencontainers.image.created=$BUILD_DATE \
 	  org.opencontainers.image.authors="Wilman Ortiz Navarro " \
-	  org.opencontainers.image.url="https://gitlab.com/bcamilo/server-Gateway/-/blob/master/master/Dockerfile" \
+	  org.opencontainers.image.url="https://github.com/wortiz1027/employee-services/blob/master/Dockerfile" \
 	  org.opencontainers.image.documentation="" \
-	  org.opencontainers.image.source="https://gitlab.com/bcamilo/server-Gateway/-/blob/master/master/Dockerfile" \
+	  org.opencontainers.image.source="https://github.com/wortiz1027/employee-services/blob/master/Dockerfile" \
 	  org.opencontainers.image.version=$BUILD_VERSION \
 	  org.opencontainers.image.revision=$BUILD_REVISION \
-	  org.opencontainers.image.vendor="Developer.io" \
+	  org.opencontainers.image.vendor="https://developer.io" \
 	  org.opencontainers.image.licenses="" \
 	  org.opencontainers.image.title="Employees Services" \
 	  org.opencontainers.image.description="El siguiente servicio gestionar toda la informacion de los empleados"

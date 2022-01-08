@@ -1,0 +1,13 @@
+# +-----------------------------------------------------
+# |         SPRING DATASOURCE CONFIG
+# +-----------------------------------------------------
+spring:
+  datasource:
+    url: jdbc:tc:mysql:5.7.31:///employees?TC_INITSCRIPT=database/employees.sql
+
+logging:
+  level:
+    org.testcontainers: DEBUG
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
