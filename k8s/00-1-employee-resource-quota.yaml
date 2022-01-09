@@ -13,13 +13,13 @@ metadata:
     owner: taa
     env: dev
     type: backend
+    app: api-employees
 spec:
   hard:
     requests.cpu: "500m"
     requests.memory: "500m"
     limits.cpu: "1"
     limits.memory: "990mi"
-
 ---
 apiVersion: v1
 kind: ResourceQuota
@@ -30,6 +30,7 @@ metadata:
     owner: taa
     env: dev
     type: backend
+    app: api-employees
 spec:
   hard:
     request.cpu: "1"

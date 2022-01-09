@@ -13,6 +13,7 @@ metadata:
     owner: taa
     env: dev
     type: configuration
+    app: api-employees
 data:
   KEY_DB_EMPLOYEES_HOST: localhost
   KEY_DB_EMPLOYEES_PORT: 33061
@@ -27,6 +28,7 @@ metadata:
     owner: taa
     env: prd
     type: configuration
+    app: api-employees
 data:
   KEY_DB_EMPLOYEES_HOST: localhost
   KEY_DB_EMPLOYEES_PORT: 33061

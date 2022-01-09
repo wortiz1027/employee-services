@@ -12,7 +12,7 @@ metadata:
     owner: taa
     env: dev
     type: backend
-
+    app: api-employees
 ---
 apiVersion: v1
 kind: Namespace
@@ -22,3 +22,4 @@ metadata:
     owner: taa
     env: prd
     type: backend
+    app: api-employees
