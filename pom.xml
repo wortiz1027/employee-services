@@ -64,7 +64,7 @@
             </properties>
         </profile>
         <profile>
-            <id>all-tests</id>
+            <id>tests</id>
             <properties>
                 <build.profile.id>all-tests</build.profile.id>
                 <!-- All tests are run. -->
