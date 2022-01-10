@@ -1,0 +1,92 @@
+# +--------------------------------------------------
+# | CREATE DEPLOYMENT FOR PRODUCTION ENVIRONMENT
+# | AUTHOR: WORTIZ
+# | DATE: 10-01-2022
+# +--------------------------------------------------
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dlt-api-employees
+  namespace: ns-production
+  labels:
+    owner: taa
+    env: prd
+    type: application
+    app: api-employees
+spec:
+  selector:
+    matchLabels:
+      owner: taa
+      env: prd
+      type: application
+      app: api-employees
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        owner: taa
+        env: prd
+        type: application
+        app: api-employees
+    spec:
+      containers:
+        - name: employee-services
+          image: wortiz1027/employee-services:v1.0.0-20220110121740
+          ports:
+             - name: http
+               containerPort: 8080
+             - name: monitor
+               containerPort: 9090
+          imagePullPolicy: Always
+          env:
+            - name: DB_EMPLOYEES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-application-production
+                  key: KEY_DB_EMPLOYEES_HOST
+            - name: DB_EMPLOYEES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-application-production
+                  key: KEY_DB_EMPLOYEES_PORT
+            - name: DB_EMPLOYEES_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-application-production
+                  key: KEY_DB_EMPLOYEES_NAME
+            - name: DB_EMPLOYEES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sc-db-credential-production
+                  key: KEY_DB_EMPLOYEES_USERNAME
+            - name: DB_EMPLOYEES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sc-db-credential-production
+                  key: KEY_DB_EMPLOYEES_PASSWORD
+          resources:
+            requests:
+              memory: "120Mi"
+              cpu: "270m"
+            limits:
+              memory: "170Mi"
+              cpu: "370m"
+          readinessProbe:
+            httpGet:
+              path: /monitor/actuator/health/readiness
+              port: 9090
+              initialDelaySeconds: 60
+              timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /monitor/actuator/health/liveness
+              port: 9090
+              initialDelaySeconds: 130
+              timeoutSeconds: 10
+              failureThreshold: 10

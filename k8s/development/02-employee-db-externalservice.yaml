@@ -1,5 +1,5 @@
 # +---------------------------------------------------------------------
-# | CREATE SERVICE CONNECT TO EXTERNAL MYSQL FOR DIFERENTS ENVIRONMENT
+# | CREATE SERVICE CONNECT TO EXTERNAL MYSQL FOR DEVELOPMENT ENVIRONMENT
 # | AUTHOR: WORTIZ
 # | DATE: 09-01-2022
 # +---------------------------------------------------------------------
@@ -21,21 +21,3 @@ spec:
     - name: db-development
       port: 33060
       targetPort: 33060
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: svc-mysql-server-production
-  namespace: ns-production
-  labels:
-    app: api-employees
-    owner: taa
-    env: dev
-    type: configuration
-spec:
-  type: ExternalName
-  ExternalName: developer-io
-  ports:
-    - name: db-production
-      port: 33061
-      targetPort: 33061

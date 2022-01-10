@@ -1,5 +1,5 @@
 # +--------------------------------------------------
-# | CREATE NAMESPACES FOR DIFERENTS ENVIRONMENT
+# | CREATE NAMESPACES FOR DEVELOP ENVIRONMENT
 # | AUTHOR: WORTIZ
 # | DATE: 09-01-2022
 # +--------------------------------------------------
@@ -11,15 +11,5 @@ metadata:
   labels:
     owner: taa
     env: dev
-    type: backend
-    app: api-employees
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: ns-production
-  labels:
-    owner: taa
-    env: prd
-    type: backend
+    type: configuration
     app: api-employees

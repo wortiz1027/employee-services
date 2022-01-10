@@ -19,10 +19,10 @@ RUN mvn clean package -Dmaven.test.skip=true
 FROM adoptopenjdk/openjdk11:jdk-11.0.11_9-alpine-slim AS builder
 WORKDIR source
 ENV HTTP_PORT=8080 \
-    MONITO_PORT=9090
+    MONITOR_PORT=9090
 ARG JAR_FILE=employee-services.jar
 COPY --from=generator /artifact/target/$JAR_FILE employee-services.jar
-EXPOSE $HTTP_PORT $MONITO_PORT
+EXPOSE $HTTP_PORT $MONITOR_PORT
 RUN java -Djarmode=layertools -jar employee-services.jar extract
 
 FROM adoptopenjdk/openjdk11:alpine-jre

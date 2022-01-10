@@ -26,6 +26,25 @@ spring:
 management:
   server:
     port: 9090
+  endpoint:
+    info:
+      enabled: true
+    shutdown:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+      show-details: always
+      status:
+        http-mapping:
+          down: 500
+          fatal: 503
+          out-of-service: 503
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
   endpoints:
     web:
       base-path: /monitor/actuator

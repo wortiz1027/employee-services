@@ -11,12 +11,13 @@
 version: '3.8'
 services:
   employee-services:
-    image: wortiz1027/employee-services:v1.0.0-20220110121740
+    image: wortiz1027/employee-services:v1.0.0-20220110165509
     container_name: employee-services
     hostname: employee-services
     restart: always
     ports:
       - 8080:8080
+      - 9090:9090
     environment:
       - DB_EMPLOYEES_HOST=dev_employees
       - DB_EMPLOYEES_PORT=3306
