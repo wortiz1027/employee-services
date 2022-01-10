@@ -1,34 +1,38 @@
 # ----------------------------------------------------------------------
 # - DOCKERFILE
 # - AUTOR: Wilman Ortiz
-# - FECHA: 07-Enero-2022
+# - FECHA: 10-Enero-2022
 # - DESCRIPCION: Dockerfile que permite la creacion del
 # -              contenedor con el servicio de empleaos
+# - BUILD-COMMAND: DOCKER_BUILDKIT=1 docker build --no-cache=true --build-arg BUILD_DATE="$(date '+%Y-%m-%d %H:%M:%S')" --build-arg BUILD_VERSION="v1.0.0-$(date '+%Y%m%d%H%M%S')" --tag=wortiz1027/employee-services:"v1.0.0-$(date '+%Y%m%d%H%M%S')" --rm=true .
+# - https://stackoverflow.com/questions/51115856/docker-failed-to-export-image-failed-to-create-image-failed-to-get-layer
+# - https://www.rajith.me/2021/04/create-optimized-spring-boot-docker.html
+# - https://github.com/Rajithkonara/rest-localization
 # -----------------------------------------------------------------------
 
-# escape=\ (backslash)
-# Imagen base del Docker Registry para compilar nuestra servicio de empleados
-# Build Stage
-FROM maven:3.8.4-jdk-11-slim AS builder
-WORKDIR /build/
+FROM maven:3.8.4-jdk-11-slim AS generator
+WORKDIR /artifact/
 COPY pom.xml .
 COPY ./src ./src
 RUN mvn clean package -Dmaven.test.skip=true
 
-# Run Stage
-FROM adoptopenjdk:11-jre-hotspot
+FROM adoptopenjdk/openjdk11:jdk-11.0.11_9-alpine-slim AS builder
+WORKDIR source
+ENV HTTP_PORT=8080 \
+    MONITO_PORT=9090
+ARG JAR_FILE=employee-services.jar
+COPY --from=generator /artifact/target/$JAR_FILE employee-services.jar
+EXPOSE $HTTP_PORT $MONITO_PORT
+RUN java -Djarmode=layertools -jar employee-services.jar extract
 
-# Parametrizacion del nombre del archivo que genera spring boot
-ARG JAR_FILE=employees-service.jar
+FROM adoptopenjdk/openjdk11:alpine-jre
+
+WORKDIR app
+
 ARG BUILD_DATE
 ARG BUILD_VERSION
 ARG BUILD_REVISION
 
-ENV APP_HOME="/app" \
-    HTTP_PORT=8080 \
-    MONITO_PORT=9090
-
-# Informacion de la persona que mantiene la imagen
 LABEL org.opencontainers.image.created=$BUILD_DATE \
 	  org.opencontainers.image.authors="Wilman Ortiz Navarro " \
 	  org.opencontainers.image.url="https://github.com/wortiz1027/employee-services/blob/master/Dockerfile" \
@@ -41,14 +45,9 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
 	  org.opencontainers.image.title="Employees Services" \
 	  org.opencontainers.image.description="El siguiente servicio gestionar toda la informacion de los empleados"
 
-# Creando directorios de la aplicacion y de carga temporal de los archivos
-RUN mkdir $APP_HOME
+COPY --from=builder source/dependencies/ ./
+COPY --from=builder source/spring-boot-loader/ ./
+COPY --from=builder source/snapshot-dependencies/ ./
+COPY --from=builder source/application/ ./
 
-# Puerto de exposicion del servicio
-EXPOSE $HTTP_PORT
-EXPOSE $MONITOR_PORT
-
-# Copiando el compilado desde builder
-COPY --from=builder /build/target/$JAR_FILE $APP_HOME/
-
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar ${APP_HOME}/employees-service.jar"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]

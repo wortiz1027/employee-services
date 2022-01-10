@@ -188,7 +188,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>employees-service</finalName>
+        <finalName>employee-services</finalName>
 
         <resources>
             <resource>

@@ -1,0 +1,30 @@
+
+
+# -----------------------------------------------------------------------------
+# - DOCKERFILE
+# - AUTOR: Brian Suarez | Eduardo Franco | Jhon Celemin | Wilman Ortiz
+# - FECHA: 06-Octubre-2020
+# - DESCRIPCION: Docker-compose que permite la creacion del
+# -              contenedor con el servicio de comandos y queries de productos
+# ------------------------------------------------------------------------------
+
+version: '3.8'
+services:
+  employee-services:
+    image: wortiz1027/employee-services:v1.0.0-20220110121740
+    container_name: employee-services
+    hostname: employee-services
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - DB_EMPLOYEES_HOST=dev_employees
+      - DB_EMPLOYEES_PORT=3306
+      - DB_EMPLOYEES_NAME=employees
+      - DB_EMPLOYEES_USERNAME=employees
+      - DB_EMPLOYEES_PASSWORD=a56e7535-fde4-419b-8556-fd6736e22254
+    networks:
+      - ntw_development
+networks:
+  ntw_development:
+    external: true

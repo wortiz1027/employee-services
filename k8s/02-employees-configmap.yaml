@@ -15,7 +15,7 @@ metadata:
     type: configuration
     app: api-employees
 data:
-  KEY_DB_EMPLOYEES_HOST: localhost
+  KEY_DB_EMPLOYEES_HOST: developer-io
   KEY_DB_EMPLOYEES_PORT: 33061
   KEY_DB_EMPLOYEES_NAME: employees
 ---
@@ -30,6 +30,6 @@ metadata:
     type: configuration
     app: api-employees
 data:
-  KEY_DB_EMPLOYEES_HOST: localhost
+  KEY_DB_EMPLOYEES_HOST: developer-io
   KEY_DB_EMPLOYEES_PORT: 33061
   KEY_DB_EMPLOYEES_NAME: employees
