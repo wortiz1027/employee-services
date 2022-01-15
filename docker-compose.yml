@@ -1,11 +1,9 @@
-
-
 # -----------------------------------------------------------------------------
 # - DOCKERFILE
-# - AUTOR: Brian Suarez | Eduardo Franco | Jhon Celemin | Wilman Ortiz
-# - FECHA: 06-Octubre-2020
+# - AUTOR: Wilman Ortiz
+# - FECHA: 10-01-2022
 # - DESCRIPCION: Docker-compose que permite la creacion del
-# -              contenedor con el servicio de comandos y queries de productos
+# -              contenedor con el servicio de employees
 # ------------------------------------------------------------------------------
 
 version: '3.8'

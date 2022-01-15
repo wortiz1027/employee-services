@@ -12,7 +12,7 @@ metadata:
   labels:
     app: api-employees
     owner: taa
-    env: dev
+    env: prd
     type: configuration
 spec:
   type: ExternalName

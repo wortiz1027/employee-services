@@ -35,6 +35,10 @@ spec:
         type: application
         app: api-employees
     spec:
+      volumes:
+        - name: vlm-dev-nfs-storage
+          persistentVolumeClaim:
+            claimName: pvc-development
       containers:
         - name: employee-services
           image: wortiz1027/employee-services:v1.0.0-20220110121740
@@ -70,6 +74,9 @@ spec:
                 secretKeyRef:
                   name: sc-db-credential-development
                   key: KEY_DB_EMPLOYEES_PASSWORD
+          volumeMounts:
+            - name: vlm-dev-nfs-storage
+              path: "/employee/dev/data"
           resources:
             requests:
               memory: "100Mi"
@@ -90,3 +97,9 @@ spec:
               initialDelaySeconds: 130
               timeoutSeconds: 10
               failureThreshold: 10
+          startupProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10

@@ -11,13 +11,13 @@ metadata:
   namespace: ns-production
   labels:
     owner: taa
-    env: dev
+    env: prd
     type: application
     app: api-employees
 spec:
   selector:
     owner: taa
-    env: dev
+    env: prd
     type: application
     app: api-employees
   type: NodePort

@@ -35,6 +35,10 @@ spec:
         type: application
         app: api-employees
     spec:
+      volumes:
+        - name: vlm-prd-nfs-storage
+          persistentVolumeClaim:
+            claimName: pvc-production
       containers:
         - name: employee-services
           image: wortiz1027/employee-services:v1.0.0-20220110121740
@@ -70,6 +74,9 @@ spec:
                 secretKeyRef:
                   name: sc-db-credential-production
                   key: KEY_DB_EMPLOYEES_PASSWORD
+          volumeMounts:
+            - name: vlm-prd-nfs-storage
+              path: "/employee/prd/data"
           resources:
             requests:
               memory: "120Mi"

@@ -11,7 +11,7 @@ metadata:
   namespace: ns-production
   labels:
     owner: taa
-    env: dev
+    env: prd
     type: configuration
     app: api-employees
 spec:
