@@ -1,10 +1,7 @@
 package co.com.services.employee.config;
 
 import co.com.services.employee.dto.ResponseExceptionDTO;
-import co.com.services.employee.exceptions.EmployeeCodeValueException;
-import co.com.services.employee.exceptions.EmployeeInformationNotFound;
-import co.com.services.employee.exceptions.EmployeesInformationNotFound;
-import co.com.services.employee.exceptions.ServerException;
+import co.com.services.employee.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -41,6 +38,50 @@ public class ControllerExceptionHandler {
     public ResponseEntity<ResponseExceptionDTO> employeeError(EmployeeCodeValueException ex) {
         ResponseExceptionDTO response = ResponseExceptionDTO.builder()
                 .code("BAD_REQUEST")
+                .message(ex.getMessage())
+                .time(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FileNameException.class)
+    public ResponseEntity<ResponseExceptionDTO> fileError(FileNameException ex) {
+        ResponseExceptionDTO response = ResponseExceptionDTO.builder()
+                .code("BAD_REQUEST")
+                .message(ex.getMessage())
+                .time(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FileSizeException.class)
+    public ResponseEntity<ResponseExceptionDTO> fileError(FileSizeException ex) {
+        ResponseExceptionDTO response = ResponseExceptionDTO.builder()
+                .code("BAD_REQUEST")
+                .message(ex.getMessage())
+                .time(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FileTypeException.class)
+    public ResponseEntity<ResponseExceptionDTO> fileError(FileTypeException ex) {
+        ResponseExceptionDTO response = ResponseExceptionDTO.builder()
+                .code("BAD_REQUEST")
+                .message(ex.getMessage())
+                .time(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UploadFileException.class)
+    public ResponseEntity<ResponseExceptionDTO> fileError(UploadFileException ex) {
+        ResponseExceptionDTO response = ResponseExceptionDTO.builder()
+                .code("INTERNAL_SERVER_ERROR")
                 .message(ex.getMessage())
                 .time(LocalDateTime.now())
                 .build();

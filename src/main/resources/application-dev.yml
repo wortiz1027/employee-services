@@ -20,3 +20,15 @@ logging:
   pattern:
     console: "%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# +-----------------------------------------------------
+# |         CUSTOM CONFIGURATION
+# +-----------------------------------------------------
+files:
+  resources:
+    protocole: http
+    host: ${FILE_HOST:localhost}
+    port: 8083
+    url: ${files.resources.protocole}://%s:${files.resources.port}/files/resources/load/%s
+  upload:
+      directory: /employee/dev/data
