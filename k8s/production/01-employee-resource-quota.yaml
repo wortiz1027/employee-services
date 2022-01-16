@@ -16,7 +16,7 @@ metadata:
     app: api-employees
 spec:
   hard:
-    request.cpu: "1"
-    request.memory: 1Gi
+    requests.cpu: "1"
+    requests.memory: 1Gi
     limits.cpu: "2"
     limits.memory: 2Gi

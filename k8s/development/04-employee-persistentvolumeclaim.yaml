@@ -1,6 +1,6 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
-metada:
+metadata:
   name: pvc-development
   namespace: ns-development
   labels:
@@ -13,5 +13,5 @@ spec:
   accessModes:
     - ReadWriteMany
   resources:
-    request:
+    requests:
       storage: 1Gi

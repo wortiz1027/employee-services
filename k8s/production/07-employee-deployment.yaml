@@ -49,6 +49,16 @@ spec:
                containerPort: 9090
           imagePullPolicy: Always
           env:
+            - name: APP_FYLESYSTEM
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-application-development
+                  key: KEY_APP_FYLESYSTEM
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-application-development
+                  key: KEY_APP_ENVIRONMENT
             - name: DB_EMPLOYEES_HOST
               valueFrom:
                 configMapKeyRef:
@@ -76,7 +86,7 @@ spec:
                   key: KEY_DB_EMPLOYEES_PASSWORD
           volumeMounts:
             - name: vlm-prd-nfs-storage
-              path: "/employee/prd/data"
+              mountPath: "/employee/prd/data"
           resources:
             requests:
               memory: "120Mi"
@@ -85,15 +95,22 @@ spec:
               memory: "170Mi"
               cpu: "370m"
           readinessProbe:
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
             httpGet:
               path: /monitor/actuator/health/readiness
               port: 9090
-              initialDelaySeconds: 60
-              timeoutSeconds: 5
           livenessProbe:
+            initialDelaySeconds: 130
+            timeoutSeconds: 10
+            failureThreshold: 10
+            periodSeconds: 5
             httpGet:
               path: /monitor/actuator/health/liveness
               port: 9090
-              initialDelaySeconds: 130
-              timeoutSeconds: 10
-              failureThreshold: 10
+          startupProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10

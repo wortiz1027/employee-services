@@ -22,9 +22,9 @@ spec:
     app: api-employees
   type: NodePort
   ports:
-    - name: http
+    - name: http-app
       port: 8080
       targetPort: 8080
-    - name: http
+    - name: http-mng
       port: 9090
       targetPort: 9090
