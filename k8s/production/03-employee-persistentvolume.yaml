@@ -20,5 +20,5 @@ spec:
     - hard
     - nfsvers=4.2
   nfs:
-    server: nfs-server
+    server: 192.168.59.104
     path: "/mnt/nfs_server"

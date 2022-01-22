@@ -17,6 +17,5 @@ metadata:
 data:
   KEY_APP_ENVIRONMENT: dev
   KEY_APP_FILESYSTEM: /employee/dev/data
-  KEY_DB_EMPLOYEES_HOST: svc-mysql-server-development
-  KEY_DB_EMPLOYEES_PORT: "33060"
+  KEY_DB_EMPLOYEES_CONNECTION: mysql
   KEY_DB_EMPLOYEES_NAME: employees

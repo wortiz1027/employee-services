@@ -9,7 +9,7 @@
 version: '3.8'
 services:
   employee-services:
-    image: wortiz1027/employee-services:v1.0.0-20220110165509
+    image: wortiz1027/employee-services:v1.0.5-20220117180152
     container_name: employee-services
     hostname: employee-services
     restart: always
@@ -18,8 +18,7 @@ services:
       - 9090:9090
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - DB_EMPLOYEES_HOST=dev_employees
-      - DB_EMPLOYEES_PORT=3306
+      - DB_EMPLOYEES_CONNECTION=dev_employees:3306
       - DB_EMPLOYEES_NAME=employees
       - DB_EMPLOYEES_USERNAME=employees
       - DB_EMPLOYEES_PASSWORD=a56e7535-fde4-419b-8556-fd6736e22254

@@ -4,7 +4,7 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_EMPLOYEES_HOST:localhost}:${DB_EMPLOYEES_PORT:33060}/${DB_EMPLOYEES_NAME:employees}
+    url: jdbc:mysql://${DB_EMPLOYEES_CONNECTION:localhost:33060}/${DB_EMPLOYEES_NAME:employees}
     username: ${DB_EMPLOYEES_USERNAME:employees}
     password: ${DB_EMPLOYEES_PASSWORD:a56e7535-fde4-419b-8556-fd6736e22254}
     type: com.zaxxer.hikari.HikariDataSource

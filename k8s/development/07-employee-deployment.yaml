@@ -26,7 +26,7 @@ spec:
     rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -35,14 +35,13 @@ spec:
         type: application
         app: api-employees
     spec:
-      restartPolicy: Always
       volumes:
         - name: vlm-dev-nfs-storage
           persistentVolumeClaim:
             claimName: pvc-development
       containers:
         - name: employee-services
-          image: wortiz1027/employee-services:v1.0.4-20220116161801
+          image: wortiz1027/employee-services:v1.0.5-20220117180152
           imagePullPolicy: Always
           ports:
             - name: http
@@ -50,7 +49,7 @@ spec:
             - name: monitor
               containerPort: 9090
           env:
-            - name: APP_FYLESYSTEM
+            - name: APP_FILESYSTEM
               valueFrom:
                 configMapKeyRef:
                   name: cm-application-development
@@ -60,16 +59,11 @@ spec:
                 configMapKeyRef:
                   name: cm-application-development
                   key: KEY_APP_ENVIRONMENT
-            - name: DB_EMPLOYEES_HOST
+            - name: DB_EMPLOYEES_CONNECTION
               valueFrom:
                 configMapKeyRef:
                   name: cm-application-development
-                  key: KEY_DB_EMPLOYEES_HOST
-            - name: DB_EMPLOYEES_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: cm-application-development
-                  key: KEY_DB_EMPLOYEES_PORT
+                  key: KEY_DB_EMPLOYEES_CONNECTION
             - name: DB_EMPLOYEES_NAME
               valueFrom:
                 configMapKeyRef:
@@ -90,28 +84,26 @@ spec:
               mountPath: "/employee/dev/data"
           resources:
             requests:
-              memory: "100Mi"
-              cpu: "250m"
-            limits:
-              memory: "150Mi"
+              memory: "250Mi"
               cpu: "350m"
-#          readinessProbe:
-#            initialDelaySeconds: 200
-#            timeoutSeconds: 5
-#            httpGet:
-#              path: /monitor/actuator/health/readiness
-#              port: 9090
-#          livenessProbe:
-#            initialDelaySeconds: 200
-#            timeoutSeconds: 10
-#            failureThreshold: 10
-#            periodSeconds: 5
-#            httpGet:
-#              path: /monitor/actuator/health/liveness
-#              port: 9090
-#          startupProbe:
-#            httpGet:
-#              path: /ping
-#              port: 8080
-#            failureThreshold: 30
-#            periodSeconds: 10
+            limits:
+              memory: "350Mi"
+              cpu: "450m"
+          startupProbe:
+            httpGet:
+              path: /ping
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 3
+          readinessProbe:
+            initialDelaySeconds: 65
+            timeoutSeconds: 65
+            httpGet:
+              path: /monitor/actuator/health/readiness
+              port: 9090
+          livenessProbe:
+            initialDelaySeconds: 65
+            periodSeconds: 3
+            httpGet:
+              path: /monitor/actuator/health/liveness
+              port: 9090

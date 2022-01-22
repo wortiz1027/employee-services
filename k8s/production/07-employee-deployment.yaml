@@ -41,34 +41,29 @@ spec:
             claimName: pvc-production
       containers:
         - name: employee-services
-          image: wortiz1027/employee-services:v1.0.0-20220110121740
-          ports:
-             - name: http
-               containerPort: 8080
-             - name: monitor
-               containerPort: 9090
+          image: wortiz1027/employee-services:v1.0.5-20220117180152
           imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: monitor
+              containerPort: 9090
           env:
-            - name: APP_FYLESYSTEM
+            - name: APP_FILESYSTEM
               valueFrom:
                 configMapKeyRef:
-                  name: cm-application-development
-                  key: KEY_APP_FYLESYSTEM
+                  name: cm-application-production
+                  key: KEY_APP_FILESYSTEM
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
-                  name: cm-application-development
+                  name: cm-application-production
                   key: KEY_APP_ENVIRONMENT
-            - name: DB_EMPLOYEES_HOST
+            - name: DB_EMPLOYEES_CONNECTION
               valueFrom:
                 configMapKeyRef:
                   name: cm-application-production
-                  key: KEY_DB_EMPLOYEES_HOST
-            - name: DB_EMPLOYEES_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: cm-application-production
-                  key: KEY_DB_EMPLOYEES_PORT
+                  key: KEY_DB_EMPLOYEES_CONNECTION
             - name: DB_EMPLOYEES_NAME
               valueFrom:
                 configMapKeyRef:
@@ -89,28 +84,26 @@ spec:
               mountPath: "/employee/prd/data"
           resources:
             requests:
-              memory: "120Mi"
-              cpu: "270m"
+              memory: "250Mi"
+              cpu: "350m"
             limits:
-              memory: "170Mi"
-              cpu: "370m"
-          readinessProbe:
-            initialDelaySeconds: 60
-            timeoutSeconds: 5
-            httpGet:
-              path: /monitor/actuator/health/readiness
-              port: 9090
-          livenessProbe:
-            initialDelaySeconds: 130
-            timeoutSeconds: 10
-            failureThreshold: 10
-            periodSeconds: 5
-            httpGet:
-              path: /monitor/actuator/health/liveness
-              port: 9090
+              memory: "350Mi"
+              cpu: "450m"
           startupProbe:
             httpGet:
               path: /ping
               port: 8080
             failureThreshold: 30
-            periodSeconds: 10
+            periodSeconds: 3
+          readinessProbe:
+            initialDelaySeconds: 65
+            timeoutSeconds: 65
+            httpGet:
+              path: /monitor/actuator/health/readiness
+              port: 9090
+          livenessProbe:
+            initialDelaySeconds: 65
+            periodSeconds: 3
+            httpGet:
+              path: /monitor/actuator/health/liveness
+              port: 9090

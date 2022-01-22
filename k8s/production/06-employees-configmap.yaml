@@ -16,7 +16,6 @@ metadata:
     app: api-employees
 data:
   KEY_APP_ENVIRONMENT: prd
-  KEY_APP_FYLESYSTEM: /employee/prd/data
-  KEY_DB_EMPLOYEES_HOST: developer-io
-  KEY_DB_EMPLOYEES_PORT: "33061"
+  KEY_APP_FILESYSTEM: /employee/prd/data
+  KEY_DB_EMPLOYEES_CONNECTION: mysql
   KEY_DB_EMPLOYEES_NAME: employees
