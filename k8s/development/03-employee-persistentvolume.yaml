@@ -4,6 +4,12 @@ metadata:
   name: pv-development
   namespace: ns-development
   labels:
+    app.kubernetes.io/name: employees
+    app.kubernetes.io/instance: employees
+    app.kubernetes.io/version: "1.0.5"
+    app.kubernetes.io/component: microservice
+    app.kubernetes.io/part-of: api-employee
+    app.kubernetes.io/managed-by: github.com
     app: api-employees
     owner: taa
     env: dev
