@@ -17,6 +17,21 @@ spring:
       max-lifetime: 180000 # Ciclo de vida máximo (milisegundos)
       connection-timeout: 30000 # Período de tiempo de espera de la conexión (milisegundos)
       connection-test-query: SELECT 1 # Detección de latidos
+
+# +-----------------------------------------------------
+# |         KEYCLOAK CONFIG
+# +-----------------------------------------------------
+keycloak:
+  auth-server-url: http://${KEYCLOAK_URL_BASE_CONNECTION:localhost:28080}/auth
+  realm: ${KEYCLOAK_REALM:realm-services}
+  resource: ${KEYCLOAK_RESOURCE:employee-service}
+  credentials:
+    secret: ${KEYCLOAK_RESOURCE_SECRET:TBkx4KYFA7ahAxgqzyCuxDkUUSl2Idzi}
+  ssl-required: external
+  bearer-only: true
+  use-resource-role-mappings: true
+  principal-attribute: preferred_username
+
 # +-----------------------------------------------------
 # |         SPRING LOGGIN CONFIG
 # +-----------------------------------------------------

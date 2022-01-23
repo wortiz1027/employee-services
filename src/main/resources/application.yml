@@ -25,7 +25,7 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 15MB
       max-request-size: 20MB
-      
+
 # +-----------------------------------------------------
 # |         MONITORING CONFIG
 # +-----------------------------------------------------

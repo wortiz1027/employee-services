@@ -23,6 +23,10 @@ services:
       - DB_EMPLOYEES_USERNAME=employees
       - DB_EMPLOYEES_PASSWORD=a56e7535-fde4-419b-8556-fd6736e22254
       - APP_FILESYSTEM=/employee/dev/data
+      - KEYCLOAK_URL_BASE_CONNECTION=sv_keycloak:8080
+      - KEYCLOAK_REALM=realm-services
+      - KEYCLOAK_RESOURCE=employee-service
+      - KEYCLOAK_RESOURCE_SECRET=TBkx4KYFA7ahAxgqzyCuxDkUUSl2Idzi
     networks:
       - ntw_development
 networks:
