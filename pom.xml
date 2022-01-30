@@ -44,6 +44,17 @@
         <tag>master</tag>
     </scm>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>develop-snapshot</id>
+            <url>http://server_nexus:8081/repository/develop-snapshot/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://server_nexus:8081/repository/develop-releases/</url>
+        </repository>
+    </distributionManagement>
+
     <profiles>
         <profile>
             <id>dev</id>
