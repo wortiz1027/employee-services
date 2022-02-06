@@ -4,9 +4,13 @@
 # - FECHA: 10-01-2022
 # - DESCRIPCION: Docker-compose que permite la creacion del
 # -              contenedor con el servicio de employees
+# - COMMANDS:
+# -     $ > docker-compose --env-file ./config/.env.dev config
+# -     $ > docker-compose --env-file ./config/.env.dev up
+# - DOCUMENTATION: https://docs.docker.com/compose/environment-variables/
 # ------------------------------------------------------------------------------
 
-version: '3.8'
+version: '3.9'
 services:
   employee-services:
     image: wortiz1027/employee-services:v1.0.5-20220117180152
@@ -17,16 +21,16 @@ services:
       - 8080:8080
       - 9090:9090
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - DB_EMPLOYEES_CONNECTION=dev_employees:3306
-      - DB_EMPLOYEES_NAME=employees
-      - DB_EMPLOYEES_USERNAME=employees
-      - DB_EMPLOYEES_PASSWORD=a56e7535-fde4-419b-8556-fd6736e22254
-      - APP_FILESYSTEM=/employee/dev/data
-      - KEYCLOAK_URL_BASE_CONNECTION=sv_keycloak:8080
-      - KEYCLOAK_REALM=realm-services
-      - KEYCLOAK_RESOURCE=employee-service
-      - KEYCLOAK_RESOURCE_SECRET=TBkx4KYFA7ahAxgqzyCuxDkUUSl2Idzi
+      - SPRING_PROFILES_ACTIVE=${KEY_SPRING_PROFILES_ACTIVE}
+      - DB_EMPLOYEES_CONNECTION=${KEY_DB_EMPLOYEES_CONNECTION}
+      - DB_EMPLOYEES_NAME=${KEY_DB_EMPLOYEES_NAME}
+      - DB_EMPLOYEES_USERNAME=${KEY_DB_EMPLOYEES_USERNAME}
+      - DB_EMPLOYEES_PASSWORD=${KEY_DB_EMPLOYEES_PASSWORD}
+      - APP_FILESYSTEM=${KEY_APP_FILESYSTEM}
+      - KEYCLOAK_URL_BASE_CONNECTION=${KEY_KEYCLOAK_URL_BASE_CONNECTION}
+      - KEYCLOAK_REALM=${KEY_KEYCLOAK_REALM}
+      - KEYCLOAK_RESOURCE=${KEY_KEYCLOAK_RESOURCE}
+      - KEYCLOAK_RESOURCE_SECRET=${KEY_KEYCLOAK_RESOURCE_SECRET}
     networks:
       - ntw_development
 networks:

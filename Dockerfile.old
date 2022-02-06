@@ -1,0 +1,54 @@
+# ----------------------------------------------------------------------
+# - DOCKERFILE
+# - AUTOR: Wilman Ortiz
+# - FECHA: 07-Enero-2022
+# - DESCRIPCION: Dockerfile que permite la creacion del
+# -              contenedor con el servicio de empleaos
+# -----------------------------------------------------------------------
+
+# escape=\ (backslash)
+# Imagen base del Docker Registry para compilar nuestra servicio de empleados
+# Build Stage
+FROM maven:3.8.4-jdk-11-slim AS builder
+WORKDIR /build/
+COPY pom.xml .
+COPY ./src ./src
+RUN mvn clean package -Dmaven.test.skip=true
+
+# Run Stage
+FROM adoptopenjdk/openjdk11:alpine-jre
+
+# Parametrizacion del nombre del archivo que genera spring boot
+ARG JAR_FILE=employee-services.jar
+ARG BUILD_DATE
+ARG BUILD_VERSION
+ARG BUILD_REVISION
+
+ENV APP_HOME="/app" \
+    HTTP_PORT=8080 \
+    MONITO_PORT=9090
+
+# Informacion de la persona que mantiene la imagen
+LABEL org.opencontainers.image.created=$BUILD_DATE \
+	  org.opencontainers.image.authors="Wilman Ortiz Navarro " \
+	  org.opencontainers.image.url="https://github.com/wortiz1027/employee-services/blob/master/Dockerfile" \
+	  org.opencontainers.image.documentation="" \
+	  org.opencontainers.image.source="https://github.com/wortiz1027/employee-services/blob/master/Dockerfile" \
+	  org.opencontainers.image.version=$BUILD_VERSION \
+	  org.opencontainers.image.revision=$BUILD_REVISION \
+	  org.opencontainers.image.vendor="https://developer.io" \
+	  org.opencontainers.image.licenses="" \
+	  org.opencontainers.image.title="Employees Services" \
+	  org.opencontainers.image.description="El siguiente servicio gestionar toda la informacion de los empleados"
+
+# Creando directorios de la aplicacion y de carga temporal de los archivos
+RUN mkdir $APP_HOME
+
+# Puerto de exposicion del servicio
+EXPOSE $HTTP_PORT
+EXPOSE $MONITOR_PORT
+
+# Copiando el compilado desde builder
+COPY --from=builder /build/target/$JAR_FILE $APP_HOME/
+
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar ${APP_HOME}/employee-services.jar"]

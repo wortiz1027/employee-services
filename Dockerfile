@@ -25,7 +25,7 @@ COPY --from=generator /artifact/target/$JAR_FILE employee-services.jar
 EXPOSE $HTTP_PORT $MONITOR_PORT
 RUN java -Djarmode=layertools -jar employee-services.jar extract
 
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM adoptopenjdk/openjdk11:jre-11.0.11_9-alpine
 
 WORKDIR app
 

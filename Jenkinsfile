@@ -1,12 +1,12 @@
 #!/usr/bin/env groovy
 
 library(
-  identifier: 'developer-shared-library@master',
+  identifier: 'jenkins-shared-library@master',
   retriever: modernSCM(
     [
       $class: 'GitSCMSource',
-      remote: 'git@github.com:wortiz1027/developer-shared-library.git',
-      credentialsId: 'GITHUB-LOGIN'
+      remote: 'git@github.com:wortiz1027/jenkins-shared-library.git',
+      //credentialsId: 'GITHUB-LOGIN'
     ]
   )
 )
@@ -25,8 +25,8 @@ pipeline {
 	}
 
 	tools {
-		maven 'MVN-3'
-		jdk 'JDK-8'
+		maven 'MVN_3'
+		jdk 'JDK_11'
     }
 
 	environment {
