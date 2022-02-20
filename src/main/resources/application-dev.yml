@@ -22,15 +22,23 @@ spring:
 # |         KEYCLOAK CONFIG
 # +-----------------------------------------------------
 keycloak:
-  auth-server-url: http://${KEYCLOAK_URL_BASE_CONNECTION:localhost:28080}/auth
+  auth-server-url: http://${KEYCLOAK_URL_BASE_CONNECTION:keycloak}/auth
   realm: ${KEYCLOAK_REALM:realm-services}
   resource: ${KEYCLOAK_RESOURCE:employee-service}
   credentials:
-    secret: ${KEYCLOAK_RESOURCE_SECRET:TBkx4KYFA7ahAxgqzyCuxDkUUSl2Idzi}
+    secret: ${KEYCLOAK_RESOURCE_SECRET:4ZUSstEL0kqe1VJaF8qw8ny0BsDSAa8w}
   ssl-required: none
   bearer-only: true
   use-resource-role-mappings: true
   principal-attribute: preferred_username
+  enable-basic-auth: true
+  expose-token: true
+  verify-token-audience: false
+  cors: true
+  cors-max-age: 10000
+  cors-allowed-methods: POST, PUT, DELETE, GET
+  cors-allowed-headers: X-Requested-With, Content-Type, Authorization, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers
+  cors-exposed-headers: WWW-Authenticate
 
 # +-----------------------------------------------------
 # |         SPRING LOGGIN CONFIG
@@ -41,6 +49,7 @@ logging:
     org.springframework.web.client.RestTamplate: DEBUG
     com.zaxxer.hikari.HikariConfig: DEBUG
     com.zaxxer.hikari: DEBUG
+    org.keycloak: TRACE
   pattern:
     console: "%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
