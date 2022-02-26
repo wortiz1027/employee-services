@@ -11,6 +11,8 @@ library(
   )
 )
 
+def utils = new io.developer.GitUtils()
+
 pipeline {
 
 	agent any
@@ -55,7 +57,7 @@ pipeline {
 			steps {
 				sh 'export MAVEN_OPTS="-Xmx512m"'
 				//git branch: "${PARAM_BUILD_BRANCH}", url: "git@github.com:wortiz1027/employee-services.git"
-				checkOut("master", "git@github.com:wortiz1027/employee-services.git", 'GITHUB-LOGIN')
+				utils.checkOut("master", "git@github.com:wortiz1027/employee-services.git", 'GITHUB-LOGIN')
 				//sh 'mvn clean compile'
 			}
 		}
