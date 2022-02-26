@@ -15,10 +15,10 @@ pipeline {
 
 	agent any
 
-	parameters {
+	/*parameters {
 			choice(name: 'PARAM_BUILD_BRANCH', choices: ['master', 'develop'], description: 'Seleccione una rama:')
 			string(name: 'PARAM_BUILD_VERSION', defaultValue: '1.0.0', description: 'Especifique la version de compilacion:')
-    }
+    }*/
 
 	triggers {
 		pollSCM '* * * * *'
