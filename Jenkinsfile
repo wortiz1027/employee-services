@@ -40,7 +40,7 @@ pipeline {
 		SLACK_ICON    = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
 		SLACK_TOKEN   = credentials("SLACK-TOKEN") //6sXFW1BR5BmAaFlhlTNWp50W
 
-			REGISTRY = "wortiz1027/employee-services"
+		REGISTRY = "wortiz1027/employee-services"
 		DOCKER_CREDENTIAL = "DHUB-TOKEN"
 		SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
 	}
@@ -57,7 +57,7 @@ pipeline {
 			steps {
 				sh 'export MAVEN_OPTS="-Xmx512m"'
 				//git branch: "${PARAM_BUILD_BRANCH}", url: "git@github.com:wortiz1027/employee-services.git"
-				checkout("master", "git@github.com:wortiz1027/employee-services.git", 'GITHUB-LOGIN')
+				checkout(inBranch: "master", inRepository: "git@github.com:wortiz1027/employee-services.git", inCredentials: 'GITHUB-LOGIN')
 				//sh 'mvn clean compile'
 			}
 		}
