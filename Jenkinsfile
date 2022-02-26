@@ -57,7 +57,7 @@ pipeline {
 			steps {
 				sh 'export MAVEN_OPTS="-Xmx512m"'
 				//git branch: "${PARAM_BUILD_BRANCH}", url: "git@github.com:wortiz1027/employee-services.git"
-				checkout inBranch: "master", inRepository: "git@github.com:wortiz1027/employee-services.git", inCredentials: 'GITHUB-LOGIN'
+				checkout("master", "git@github.com:wortiz1027/employee-services.git", 'GITHUB-LOGIN')
 				//sh 'mvn clean compile'
 			}
 		}
