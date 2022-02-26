@@ -13,7 +13,7 @@ library(
 
 pipeline {
 	
-	def utils = new io.developer.GitUtils()
+	//def utils = new io.developer.GitUtils()
 
 	agent any
 
