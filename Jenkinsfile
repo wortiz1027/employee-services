@@ -6,7 +6,7 @@ library(
     [
       $class: 'GitSCMSource',
       remote: 'git@github.com:wortiz1027/jenkins-shared-library.git',
-      //credentialsId: 'GITHUB-LOGIN'
+      credentialsId: 'GITHUB-LOGIN'
     ]
   )
 )
@@ -54,15 +54,16 @@ pipeline {
 		stage('setup') {
 			steps {
 				sh 'export MAVEN_OPTS="-Xmx512m"'
-				git branch: "${PARAM_BUILD_BRANCH}", url: "git@github.com:wortiz1027/employee-services.git"
+				//git branch: "${PARAM_BUILD_BRANCH}", url: "git@github.com:wortiz1027/employee-services.git"
+				checkOut("master", "git@github.com:wortiz1027/employee-services.git")
 				sh 'mvn clean compile'
 			}
 		}
 
-		stage('sonar') {
+		/*stage('sonar') {
 			steps {
 				//sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.organization=SONAR_ORGANIZATION -Dsonar.login=SONAR_TOKEN'
-				withSonarQubeEnv('server-sonarqube') {
+				withSonarQubeEnv('SERVER-SONARQUBE') {
 		            //sh 'mvn package sonar:sonar -Dsonar.branch.name=${PARAM_BUILD_BRANCH}' -> el parametro 'sonar.branch.name' solo está disponible para licencias comerciales
 		            sh 'mvn package sonar:sonar'
 		        }
@@ -71,9 +72,9 @@ pipeline {
 		        //    waitForQualityGate abortPipeline: true
 		        //}
 			}
-		}
+		}*/
 
-		stage('test') {
+		/*stage('test') {
 			parallel {
 				stage('unit-test') {
 					steps {
@@ -86,9 +87,9 @@ pipeline {
 					}
 				}
 			}
-		}
+		}*/
 
-		stage('reports') {
+		/*stage('reports') {
 			parallel {
 				stage('ut-reports') {
 					steps {
@@ -102,9 +103,9 @@ pipeline {
 			         	  }
 				}
 			}
-		}
+		}*/
 
-		stage('docker') {
+		/*stage('docker') {
 			environment {
                    SYSTEM_TIME_FORMATED = sh (returnStdout: true, script: "date '+%Y-%m-%d %H:%M:%S'").trim()
             }
@@ -140,7 +141,7 @@ pipeline {
                 	sh 'docker rmi $(docker images -f "dangling=true" -q)'
                 	sh 'docker logout'
 			}
-		}
+		}*/
 
 	}
 
