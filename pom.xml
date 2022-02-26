@@ -43,7 +43,14 @@
         <developerConnection>scm:git:git@github.com:wortiz1027/employee-services.git</developerConnection>
         <tag>master</tag>
     </scm>
-
+    
+    <repositories>
+         <repository>
+                  <id>maven-public</id>
+                  <url>http://192.168.20.26:8280/repository/maven-public/</url>
+         </repository>
+  </repositories>     
+         
     <distributionManagement>
         <snapshotRepository>
             <id>develop-snapshot</id>
