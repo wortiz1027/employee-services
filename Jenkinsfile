@@ -11,9 +11,9 @@ library(
   )
 )
 
-def utils = new io.developer.GitUtils()
-
 pipeline {
+	
+	def utils = new io.developer.GitUtils()
 
 	agent any
 
