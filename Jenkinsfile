@@ -6,7 +6,7 @@ library(
     [
       $class: 'GitSCMSource',
       remote: 'git@github.com:wortiz1027/jenkins-shared-library.git',
-      //credentialsId: 'GITHUB-LOGIN'
+      credentialsId: 'GITHUB-LOGIN'
     ]
   )
 )
@@ -34,29 +34,29 @@ pipeline {
 
 		SLACK_USER    = "Jenkins";
 		SLACK_CHANNEL = "#desarrollo"
-        SLACK_URL     = 'https://io-developer.slack.com/services/hooks/jenkins-ci?token='
-        SLACK_ICON    = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
-        SLACK_TOKEN   = credentials("SLACK-TOKEN") //6sXFW1BR5BmAaFlhlTNWp50W
+		SLACK_URL     = 'https://io-developer.slack.com/services/hooks/jenkins-ci?token='
+		SLACK_ICON    = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
+		SLACK_TOKEN   = credentials("SLACK-TOKEN") //6sXFW1BR5BmAaFlhlTNWp50W
 
-		REGISTRY = "wortiz1027/employee-services"
-    	DOCKER_CREDENTIAL = "DHUB-TOKEN"
-    	SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
+			REGISTRY = "wortiz1027/employee-services"
+		DOCKER_CREDENTIAL = "DHUB-TOKEN"
+		SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
 	}
 
 	stages {
-		stage("initialization") {
-               steps {
-                   sh "mvn --version"
-                   sh "java -version"
-               }
-        }
+	       stage("initialization") {
+		       steps {
+			   sh "mvn --version"
+			   sh "java -version"
+		       }
+		}
 
 		stage('setup') {
 			steps {
 				sh 'export MAVEN_OPTS="-Xmx512m"'
-				git branch: "${PARAM_BUILD_BRANCH}", url: "git@github.com:wortiz1027/employee-services.git"
-				//checkOut("master", "git@github.com:wortiz1027/employee-services.git")
-				sh 'mvn clean compile'
+				//git branch: "${PARAM_BUILD_BRANCH}", url: "git@github.com:wortiz1027/employee-services.git"
+				checkOut("master", "git@github.com:wortiz1027/employee-services.git")
+				//sh 'mvn clean compile'
 			}
 		}
 
@@ -74,7 +74,7 @@ pipeline {
 			}
 		}*/
 
-		/*stage('test') {
+		stage('test') {
 			parallel {
 				stage('unit-test') {
 					steps {
@@ -87,7 +87,7 @@ pipeline {
 					}
 				}
 			}
-		}*/
+		}
 
 		/*stage('reports') {
 			parallel {
