@@ -38,10 +38,10 @@ pipeline {
 		SLACK_ICON    = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
 		SLACK_TOKEN   = credentials("SLACK-TOKEN") //6sXFW1BR5BmAaFlhlTNWp50W
 
-        DOCKER_IMAGE_NAME = "employee-services"
-		PUBLIC_REGISTRY   = "wortiz1027"
-		PRIVATE_REGISTRY  = "localhost:5000"
-		DOCKER_TOKEN      = credentials("DHUB-TOKEN")
+        PROJECT_NAME     = "employee-services"
+		PUBLIC_REGISTRY  = "wortiz1027"
+		PRIVATE_REGISTRY = "localhost:5000"
+		DOCKER_TOKEN     = credentials("DHUB-TOKEN")
 		PUBLIC_DOCKER_CREDENTIAL  = "DHUB-CREDENTIALS"
 		PRIVATE_DOCKER_CREDENTIAL = "NEXUS-CREDENTIALS"
 		SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
@@ -69,19 +69,13 @@ pipeline {
             }
         }
 
-		/*stage('sonar') {
+		stage('sonar') {
 			steps {
-				//sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.organization=SONAR_ORGANIZATION -Dsonar.login=SONAR_TOKEN'
 				withSonarQubeEnv('SERVER-SONARQUBE') {
-		            //sh 'mvn package sonar:sonar -Dsonar.branch.name=${PARAM_BUILD_BRANCH}' -> el parametro 'sonar.branch.name' solo está disponible para licencias comerciales
-		            sh 'mvn package sonar:sonar'
+		            sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=$PROJECT_NAME'
 		        }
-
-		        //timeout(time: 10, unit: 'SECONDS') {
-		        //    waitForQualityGate abortPipeline: true
-		        //}
 			}
-		}*/
+		}
 
 		stage('tests') {
 			parallel {
@@ -119,7 +113,7 @@ pipeline {
                    SYSTEM_TIME_FORMATED = sh (returnStdout: true, script: "date '+%Y-%m-%d %H:%M:%S'").trim()
             }
 			steps {
-				sh 'DOCKER_BUILDKIT=1 docker build --no-cache=true --build-arg BUILD_DATE="$SYSTEM_TIME_FORMATED" --build-arg BUILD_VERSION="$PARAM_BUILD_VERSION-$SYSTEM_TIME" --tag=$PUBLIC_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" --rm=true .'
+				sh 'DOCKER_BUILDKIT=1 docker build --no-cache=true --build-arg BUILD_DATE="$SYSTEM_TIME_FORMATED" --build-arg BUILD_VERSION="$PARAM_BUILD_VERSION-$SYSTEM_TIME" --tag=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" --rm=true .'
 			}
 		}
 
@@ -135,7 +129,7 @@ pipeline {
 					steps {
 							script {
 							 	docker.withRegistry("https://index.docker.io/v1/", "$PUBLIC_DOCKER_CREDENTIAL") {
-                                  sh 'docker push $PUBLIC_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                                  sh 'docker push $PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                                 }
 							}
 			        }
@@ -145,8 +139,8 @@ pipeline {
                     steps {
                             script {
                                 docker.withRegistry("http://localhost:5000", "$PRIVATE_DOCKER_CREDENTIAL") {
-                                  sh 'docker tag $PUBLIC_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" $PRIVATE_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-                                  sh 'docker push $PRIVATE_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                                  sh 'docker tag $PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                                  sh 'docker push $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                                 }
                             }
                     }
@@ -157,8 +151,8 @@ pipeline {
 		stage('clean') {
 			steps {
                 	sh 'mvn clean'
-                	sh 'docker rmi $PUBLIC_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-                	sh 'docker rmi $PRIVATE_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                	sh 'docker rmi $PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                	sh 'docker rmi $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker logout'
 			}
 		}
