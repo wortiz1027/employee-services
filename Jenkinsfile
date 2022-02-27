@@ -73,11 +73,11 @@ pipeline {
 			}
 		}*/
 
-		stage('test') {
+		stage('tests') {
 			parallel {
 				stage('unit-test') {
 					steps {
-						sh 'mvn test -P dev'
+						sh 'mvn test -P test'
 					}
 				}
 				stage('integration-test') {
