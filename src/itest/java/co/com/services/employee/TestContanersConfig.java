@@ -24,10 +24,10 @@ public abstract class TestContanersConfig {
 
     private static final String COMPANY_SERVICE_REALM_NAME = "realm-services";
     private static final String EMPLOYEE_SERVICE_CLIENT_ID = "employee-service";
-    private static final String EMPLOYEE_SERVICE_CLIENT_SECRET = "TBkx4KYFA7ahAxgqzyCuxDkUUSl2Idzi";
+    private static final String EMPLOYEE_SERVICE_CLIENT_SECRET = "4ZUSstEL0kqe1VJaF8qw8ny0BsDSAa8w";
     private static final String USER_USERNAME = "wortiz";
     private static final String USER_PASSWORD = "junior2022++";
-    private static final List<String> EMPLOYEE_SERVICE_ROLES = Collections.singletonList("users");
+    private static final List<String> EMPLOYEE_SERVICE_ROLES = Collections.singletonList("USER");
 
     private static final Integer KEYCLOAK_SERVER_TIMEOUT  = 2;
     private static final Integer KEYCLOAK_SERVER_PORT     = 8080;

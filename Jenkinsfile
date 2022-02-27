@@ -12,8 +12,6 @@ library(
 )
 
 pipeline {
-	
-	//def utils = new io.developer.GitUtils()
 
 	agent any
 
@@ -48,17 +46,16 @@ pipeline {
 	stages {
 	       stage("initialization") {
 		       steps {
-			   sh "mvn --version"
-			   sh "java -version"
+                   sh "mvn --version"
+                   sh "java -version"
 		       }
 		}
 
-		stage('setup') {
+		stage('app-setup') {
 			steps {
 				sh 'export MAVEN_OPTS="-Xmx512m"'
-				//git branch: "${PARAM_BUILD_BRANCH}", url: "git@github.com:wortiz1027/employee-services.git"
 				gitUtils "master", "git@github.com:wortiz1027/employee-services.git", 'GITHUB-LOGIN'
-				//sh 'mvn clean compile'
+				sh 'mvn clean compile'
 			}
 		}
 
@@ -144,6 +141,13 @@ pipeline {
                 	sh 'docker logout'
 			}
 		}*/
+
+        stage('k8s-setup') {
+            steps {
+                gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
+                sh 'cd lab2/development'
+            }
+        }
 
 	}
 
