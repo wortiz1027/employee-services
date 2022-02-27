@@ -38,9 +38,11 @@ pipeline {
 		SLACK_ICON    = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
 		SLACK_TOKEN   = credentials("SLACK-TOKEN") //6sXFW1BR5BmAaFlhlTNWp50W
 
-		REGISTRY = "wortiz1027/employee-services"
-		DOCKER_TOKEN = credentials("DHUB-TOKEN")
-		DOCKER_CREDENTIAL = "DHUB-CREDENTIALS"
+		PUBLIC_REGISTRY   = "wortiz1027/employee-services"
+		PRIVATE_REGISTRY  = "localhost:5000"
+		DOCKER_TOKEN      = credentials("DHUB-TOKEN")
+		PUBLIC_DOCKER_CREDENTIAL  = "DHUB-CREDENTIALS"
+		PRIVATE_DOCKER_CREDENTIAL = "NEXUS-CREDENTIALS"
 		SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
 	}
 
@@ -116,7 +118,7 @@ pipeline {
                    SYSTEM_TIME_FORMATED = sh (returnStdout: true, script: "date '+%Y-%m-%d %H:%M:%S'").trim()
             }
 			steps {
-				sh 'DOCKER_BUILDKIT=1 docker build --no-cache=true --build-arg BUILD_DATE="$SYSTEM_TIME_FORMATED" --build-arg BUILD_VERSION="$PARAM_BUILD_VERSION-$SYSTEM_TIME" --tag=$REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" --rm=true .'
+				sh 'DOCKER_BUILDKIT=1 docker build --no-cache=true --build-arg BUILD_DATE="$SYSTEM_TIME_FORMATED" --build-arg BUILD_VERSION="$PARAM_BUILD_VERSION-$SYSTEM_TIME" --tag=$PUBLIC_REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" --rm=true .'
 			}
 		}
 
@@ -128,26 +130,34 @@ pipeline {
 					}
 				}
 
-				stage('registry') {
+				stage('public-registry') {
 					steps {
 							script {
-							 	/*withDockerRegistry(credentialsId: "$DOCKER_CREDENTIAL", url: "") {
-				         			sh 'docker push $REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-				         		}*/
-				         		docker.withRegistry("https://index.docker.io/v1/", "$DOCKER_CREDENTIAL") {
-                                  sh 'docker push $REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+							 	docker.withRegistry("https://index.docker.io/v1/", "$PUBLIC_DOCKER_CREDENTIAL") {
+                                  sh 'docker push $PUBLIC_REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                                 }
 							}
 			        }
 				}
+
+				stage('private-registry') {
+                    steps {
+                            script {
+                                docker.withRegistry("http://localhost:5000", "$PRIVATE_DOCKER_CREDENTIAL") {
+                                  sh 'docker tag $PUBLIC_REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" $PRIVATE_REGISTRY/"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                                  sh 'docker push $PRIVATE_REGISTRY/"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                                }
+                            }
+                    }
+                }
 			}
 		}
 
 		stage('clean') {
 			steps {
                 	sh 'mvn clean'
+                	sh 'docker rmi $PRIVATE_REGISTRY/"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker rmi $REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-                	sh 'docker rmi $(docker images -f "dangling=true" -q)'
                 	sh 'docker logout'
 			}
 		}
