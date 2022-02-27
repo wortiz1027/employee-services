@@ -146,7 +146,7 @@ pipeline {
                             script {
                                 docker.withRegistry("http://localhost:5000", "$PRIVATE_DOCKER_CREDENTIAL") {
                                   sh 'docker tag $PUBLIC_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" $PRIVATE_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-                                  sh 'docker push $PRIVATE_REGISTRY/"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                                  sh 'docker push $PRIVATE_REGISTRY/$DOCKER_IMAGE_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                                 }
                             }
                     }
