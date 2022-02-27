@@ -65,7 +65,7 @@
         <repository>
             <id>maven-public</id>
             <name>maven-public</name>
-            <url>http://server_nexus:8280/repository/maven-public/</url>
+            <url>http://server_nexus:8081/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
