@@ -3,7 +3,7 @@
 # +-----------------------------------------------------
 spring:
   datasource:
-    url: jdbc:tc:mysql:8.0.27:///employees?TC_INITSCRIPT=database/employees.sql
+    url: jdbc:tc:mysql:5.7.35:///employees?TC_INITSCRIPT=database/employees.sql
   servlet:
     multipart:
       enabled: true
