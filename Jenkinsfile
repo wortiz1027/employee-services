@@ -115,7 +115,7 @@ pipeline {
                    SYSTEM_TIME_FORMATED = sh (returnStdout: true, script: "date '+%Y-%m-%d %H:%M:%S'").trim()
             }
 			steps {
-				sh 'docker build --no-cache=true --build-arg BUILD_DATE="$SYSTEM_TIME_FORMATED" --build-arg BUILD_VERSION="$PARAM_BUILD_VERSION-$SYSTEM_TIME" --tag=$REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" --rm=true .'
+				sh 'DOCKER_BUILDKIT=1 docker build --no-cache=true --build-arg BUILD_DATE="$SYSTEM_TIME_FORMATED" --build-arg BUILD_VERSION="$PARAM_BUILD_VERSION-$SYSTEM_TIME" --tag=$REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME" --rm=true .'
 			}
 		}
 
