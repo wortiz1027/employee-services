@@ -131,9 +131,12 @@ pipeline {
 				stage('registry') {
 					steps {
 							script {
-							 	withDockerRegistry(credentialsId: "$DOCKER_CREDENTIAL", url: "") {
+							 	/*withDockerRegistry(credentialsId: "$DOCKER_CREDENTIAL", url: "") {
 				         			sh 'docker push $REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-				         		}
+				         		}*/
+				         		docker.withRegistry("https://index.docker.io/v1/", "$DOCKER_CREDENTIAL") {
+                                  sh 'docker push $REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                                }
 							}
 			        }
 				}
