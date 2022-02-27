@@ -39,7 +39,7 @@ pipeline {
 		SLACK_TOKEN   = credentials("SLACK-TOKEN") //6sXFW1BR5BmAaFlhlTNWp50W
 
 		REGISTRY = "wortiz1027/employee-services"
-		DOCKER_CREDENTIAL = "DHUB-TOKEN"
+		DOCKER_CREDENTIAL = credentials("DHUB-TOKEN")
 		SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
 	}
 
