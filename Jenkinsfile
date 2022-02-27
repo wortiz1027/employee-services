@@ -15,10 +15,10 @@ pipeline {
 
 	agent any
 
-	/*parameters {
+	parameters {
 			choice(name: 'PARAM_BUILD_BRANCH', choices: ['master', 'develop'], description: 'Seleccione una rama:')
 			string(name: 'PARAM_BUILD_VERSION', defaultValue: '1.0.0', description: 'Especifique la version de compilacion:')
-    }*/
+    }
 
 	triggers {
 		pollSCM '* * * * *'
@@ -54,10 +54,16 @@ pipeline {
 		stage('app-setup') {
 			steps {
 				sh 'export MAVEN_OPTS="-Xmx512m"'
-				gitUtils "master", "git@github.com:wortiz1027/employee-services.git", 'GITHUB-LOGIN'
+				gitUtils "${PARAM_BUILD_BRANCH}", "git@github.com:wortiz1027/employee-services.git", 'GITHUB-LOGIN'
 				sh 'mvn clean compile'
 			}
 		}
+
+        stage('dependency-check') {
+            steps {
+                sh 'mvn org.owasp:dependency-check-maven:check'
+            }
+        }
 
 		/*stage('sonar') {
 			steps {
@@ -104,7 +110,7 @@ pipeline {
 			}
 		}*/
 
-		/*stage('docker') {
+		stage('docker') {
 			environment {
                    SYSTEM_TIME_FORMATED = sh (returnStdout: true, script: "date '+%Y-%m-%d %H:%M:%S'").trim()
             }
@@ -118,7 +124,7 @@ pipeline {
 				stage('artifactory') {
 					steps {
 							sh 'mvn deploy -Dmaven.test.skip=true'
-						  }
+					}
 				}
 
 				stage('registry') {
@@ -128,7 +134,7 @@ pipeline {
 				         			sh 'docker push $REGISTRY:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
 				         		}
 							}
-			         	  }
+			        }
 				}
 			}
 		}
@@ -140,7 +146,7 @@ pipeline {
                 	sh 'docker rmi $(docker images -f "dangling=true" -q)'
                 	sh 'docker logout'
 			}
-		}*/
+		}
 
         stage('k8s-setup') {
             steps {

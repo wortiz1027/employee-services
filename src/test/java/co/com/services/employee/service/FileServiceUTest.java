@@ -19,7 +19,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
-//@TestPropertySource(locations="classpath:application-test.yml")
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Bateria de pruebas para FileService")
 class FileServiceUTest {
