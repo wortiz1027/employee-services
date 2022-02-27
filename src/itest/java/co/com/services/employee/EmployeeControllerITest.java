@@ -59,6 +59,7 @@ public class EmployeeControllerITest extends TestContanersConfig {
     @Test
     @DisplayName("TEST :: Valida 'BAD_REQUEST' al consultar informacion del empleado")
     void itShouldReturnEmployeesInformationDetailCodeValueException() throws Exception {
+        //MySQL.start();
         String token = keycloakService.tokenManager().grantToken().getToken();
 
         this.client.perform( MockMvcRequestBuilders

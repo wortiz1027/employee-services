@@ -10,7 +10,9 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.Duration;
@@ -44,6 +46,27 @@ public abstract class TestContanersConfig {
     private static final GenericContainer<?> KEYCLOAK_SERVER = new GenericContainer<>("jboss/keycloak:16.1.1");
 
     protected static Keycloak keycloakService;
+
+    //@Container
+    static final MySQLContainer<?> MySQL;
+
+    static {
+        MySQL = new MySQLContainer<>("mysql:8.0.27")
+                                        .withUsername("wortiz")
+                                        .withPassword("server2022++")
+                                        .withDatabaseName("employees")
+                                        .withInitScript("database/employees.sql")
+                                        .withCommand("mysqld --default-authentication-plugin=mysql_native_password")
+                                        .withReuse(true);
+        MySQL.start();
+    }
+
+    @DynamicPropertySource
+    static void postgresqlProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", MySQL::getJdbcUrl);
+        registry.add("spring.datasource.username", MySQL::getUsername);
+        registry.add("spring.datasource.password", MySQL::getPassword);
+    }
 
     @DynamicPropertySource
     private static void properties(DynamicPropertyRegistry registry) {
