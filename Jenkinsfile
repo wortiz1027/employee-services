@@ -40,7 +40,7 @@ pipeline {
 
 		REGISTRY = "wortiz1027/employee-services"
 		DOCKER_TOKEN = credentials("DHUB-TOKEN")
-		DOCKER_CREDENTIAL = credentials("DHUB-CREDENTIALS")
+		DOCKER_CREDENTIAL = "DHUB-CREDENTIALS"
 		SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
 	}
 
