@@ -144,7 +144,7 @@ pipeline {
 
         stage('k8s-setup') {
             steps {
-                sh 'cd /home/dbs'
+                sh 'cd /tmp'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
                 sh 'cd lab2/development'
             }

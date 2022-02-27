@@ -1,0 +1,67 @@
+# +-----------------------------------------------------
+# |         SPRING DATASOURCE CONFIG
+# +-----------------------------------------------------
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_EMPLOYEES_CONNECTION:localhost:33060}/${DB_EMPLOYEES_NAME:employees}
+    username: ${DB_EMPLOYEES_USERNAME:employees}
+    password: ${DB_EMPLOYEES_PASSWORD:a56e7535-fde4-419b-8556-fd6736e22254}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5 # Número mínimo de enlaces
+      maximum-pool-size: 15 # Número máximo de conexiones
+      auto-commit: true # Envío automático
+      idle-timeout: 30000 # Tiempo máximo de inactividad (milisegundos)
+      pool-name: DataPoolHikari # Nombre del grupo de enlaces
+      max-lifetime: 180000 # Ciclo de vida máximo (milisegundos)
+      connection-timeout: 30000 # Período de tiempo de espera de la conexión (milisegundos)
+      connection-test-query: SELECT 1 # Detección de latidos
+
+# +-----------------------------------------------------
+# |         KEYCLOAK CONFIG
+# +-----------------------------------------------------
+keycloak:
+  auth-server-url: http://${KEYCLOAK_URL_BASE_CONNECTION:keycloak}/auth
+  realm: ${KEYCLOAK_REALM:realm-services}
+  resource: ${KEYCLOAK_RESOURCE:employee-service}
+  credentials:
+    secret: ${KEYCLOAK_RESOURCE_SECRET:4ZUSstEL0kqe1VJaF8qw8ny0BsDSAa8w}
+  ssl-required: none
+  bearer-only: true
+  use-resource-role-mappings: true
+  principal-attribute: preferred_username
+  enable-basic-auth: true
+  expose-token: true
+  verify-token-audience: false
+  cors: true
+  cors-max-age: 10000
+  cors-allowed-methods: POST, PUT, DELETE, GET
+  cors-allowed-headers: X-Requested-With, Content-Type, Authorization, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers
+  cors-exposed-headers: WWW-Authenticate
+
+# +-----------------------------------------------------
+# |         SPRING LOGGIN CONFIG
+# +-----------------------------------------------------
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.web.client.RestTamplate: DEBUG
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: DEBUG
+    org.keycloak: TRACE
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# +-----------------------------------------------------
+# |         CUSTOM CONFIGURATION
+# +-----------------------------------------------------
+files:
+  resources:
+    protocole: http
+    host: ${FILE_HOST:localhost}
+    port: 8083
+    url: ${files.resources.protocole}://%s:${files.resources.port}/files/resources/load/%s
+  upload:
+    directory: ${APP_FILESYSTEM:/tmp}
