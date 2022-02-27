@@ -64,4 +64,4 @@ files:
     port: 8083
     url: ${files.resources.protocole}://%s:${files.resources.port}/files/resources/load/%s
   upload:
-      directory: ${APP_FILESYSTEM:/tmp}
+    directory: ${APP_FILESYSTEM:/tmp}
