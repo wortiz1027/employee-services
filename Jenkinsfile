@@ -31,13 +31,7 @@ pipeline {
 
 	environment {
 		JOB_NAME      = "${env.JOB_NAME}"
-
-		SLACK_USER    = "Jenkins";
-		SLACK_CHANNEL = "#desarrollo"
-		SLACK_URL     = 'https://io-developer.slack.com/services/hooks/jenkins-ci?token='
-		SLACK_ICON    = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
-		SLACK_TOKEN   = credentials("SLACK-TOKEN") //6sXFW1BR5BmAaFlhlTNWp50W
-
+		
         PROJECT_NAME     = "employee-services"
 		PUBLIC_REGISTRY  = "wortiz1027"
 		PRIVATE_REGISTRY = "localhost:5000"
@@ -63,7 +57,7 @@ pipeline {
 			}
 		}
 
-        /*stage('dependency-check') {
+        stage('dependency-check') {
             steps {
                 sh 'mvn org.owasp:dependency-check-maven:check'
             }
@@ -75,7 +69,7 @@ pipeline {
 		            sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=$PROJECT_NAME'
 		        }
 			}
-		}*/
+		}
 
 		stage('tests') {
 			parallel {
@@ -84,11 +78,11 @@ pipeline {
 						sh 'mvn test -P test'
 					}
 				}
-				/*stage('integration-test') {
+				stage('integration-test') {
 					steps {
 						sh 'mvn verify -P itest'
 					}
-				}*/
+				}
 			}
 		}
 
@@ -100,14 +94,14 @@ pipeline {
 						  }
 				}
 
-				/*stage('it-reports') {
+				stage('it-reports') {
 					steps {
 			         		junit 'target/failsafe-reports/*.xml'
 			         	  }
-				}*/
+				}
 			}
 		}
-/*
+
 		stage('docker') {
 			environment {
                    SYSTEM_TIME_FORMATED = sh (returnStdout: true, script: "date '+%Y-%m-%d %H:%M:%S'").trim()
@@ -159,11 +153,33 @@ pipeline {
 
         stage('k8s-setup') {
             steps {
+                sh 'kubectl cluster-info'
+                sh 'kubectl config view'
                 sh 'cd /tmp'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
                 sh 'cd lab2/development'
+                sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                sh 'envsubst < 07-employee-deployment.yaml > 07-employee-deployment-version.yaml'
             }
-        }*/
+        }
+
+        stage('k8s-deploy') {
+            steps {
+                sh 'cd /tmp/k8s/lab2/development'
+                sh 'kubectl apply -f 00-employee-namespaces.yaml'
+                sh 'kubectl apply -f 01-employee-resource-quota.yaml'
+                sh 'kubectl apply -f 02-employee-externalservice-keycloak.yaml'
+                sh 'kubectl apply -f 02-employee-externalservice-mysql.yaml'
+                sh 'kubectl apply -f 03-employee-persistentvolume.yaml'
+                sh 'kubectl apply -f 04-employee-persistentvolumeclaim.yaml'
+                sh 'kubectl apply -f 05-employee-sealed-secrets-application.yaml'
+                sh 'kubectl apply -f 06-employees-configmap.yaml'
+                sh 'kubectl apply -f 07-employee-deployment-version.yaml'
+                sh 'kubectl apply -f 08-employee-service.yaml'
+                sh 'kubectl apply -f 09-employee-sealed-secrets-tls.yaml'
+                sh 'kubectl apply -f 10-employee-ingress.yaml'
+            }
+        }
 
 	}
 
