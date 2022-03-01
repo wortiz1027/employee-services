@@ -84,11 +84,11 @@ pipeline {
 						sh 'mvn test -P test'
 					}
 				}
-				stage('integration-test') {
+				/*stage('integration-test') {
 					steps {
 						sh 'mvn verify -P itest'
 					}
-				}
+				}*/
 			}
 		}
 
