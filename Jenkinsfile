@@ -31,7 +31,7 @@ pipeline {
 
 	environment {
 		JOB_NAME      = "${env.JOB_NAME}"
-		
+
         PROJECT_NAME     = "employee-services"
 		PUBLIC_REGISTRY  = "wortiz1027"
 		PRIVATE_REGISTRY = "localhost:5000"
