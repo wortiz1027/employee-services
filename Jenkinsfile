@@ -63,7 +63,7 @@ pipeline {
 			}
 		}
 
-        stage('dependency-check') {
+        /*stage('dependency-check') {
             steps {
                 sh 'mvn org.owasp:dependency-check-maven:check'
             }
@@ -75,7 +75,7 @@ pipeline {
 		            sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=$PROJECT_NAME'
 		        }
 			}
-		}
+		}*/
 
 		stage('tests') {
 			parallel {
@@ -106,7 +106,7 @@ pipeline {
 			         	  }
 				}
 			}
-		}*/
+		}
 
 		stage('docker') {
 			environment {
@@ -163,22 +163,14 @@ pipeline {
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
                 sh 'cd lab2/development'
             }
-        }
+        }*/
 
 	}
 
 	post {
-		success {
-			echo 'I will always say Hello again! 1'
-		}
-
-		unstable {
-			echo 'I will always say Hello again! 2'
-		}
-
-		failure {
-			echo 'I will always say Hello again! 3'
-		}
+		always {
+            notificationUtils currentBuild.result
+        }
 	}
 
 }
