@@ -63,14 +63,6 @@ pipeline {
             }
         }
 
-		stage('sonar') {
-			steps {
-				withSonarQubeEnv('SERVER-SONARQUBE') {
-		            sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=$PROJECT_NAME'
-		        }
-			}
-		}
-
 		stage('tests') {
 			parallel {
 				stage('unit-test') {
@@ -101,6 +93,14 @@ pipeline {
 				}
 			}
 		}
+
+        stage('sonar') {
+            steps {
+                withSonarQubeEnv('SERVER-SONARQUBE') {
+                    sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=$PROJECT_NAME'
+                }
+            }
+        }
 
 		stage('docker') {
 			environment {
@@ -158,11 +158,14 @@ pipeline {
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
                 sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 sh 'envsubst < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
+                sh 'kubectl delete namespace ns-development'
+                sh 'cat lab2/development/07-employee-deployment-version.yaml'
             }
         }
 
         stage('k8s-deploy') {
             steps {
+                sh 'export'
                 sh 'kubectl apply -f lab2/development/00-employee-namespaces.yaml'
                 sh 'kubectl apply -f lab2/development/01-employee-resource-quota.yaml'
                 sh 'kubectl apply -f lab2/development/02-employee-externalservice-keycloak.yaml'
@@ -171,6 +174,7 @@ pipeline {
                 sh 'kubectl apply -f lab2/development/04-employee-persistentvolumeclaim.yaml'
                 sh 'kubectl apply -f lab2/development/05-employee-sealed-secrets-application.yaml'
                 sh 'kubectl apply -f lab2/development/06-employees-configmap.yaml'
+                sh 'cat lab2/development/07-employee-deployment-version.yaml'
                 sh 'kubectl apply -f lab2/development/07-employee-deployment-version.yaml'
                 sh 'kubectl apply -f lab2/development/08-employee-service.yaml'
                 sh 'kubectl apply -f lab2/development/09-employee-sealed-secrets-tls.yaml'
