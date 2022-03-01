@@ -42,7 +42,7 @@ pipeline {
 	}
 
 	stages {
-	    /*stage("initialization") {
+	    stage("initialization") {
 		       steps {
                    sh "mvn --version"
                    sh "java -version"
@@ -149,16 +149,13 @@ pipeline {
                 	sh 'docker rmi $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker logout'
 			}
-		}*/
+		}
 
         stage('k8s-setup') {
             steps {
                 sh 'kubectl cluster-info'
                 sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
-                sh 'cd lab2/development'
-                sh 'pwd'
-                sh 'ls -lah'
                 sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 sh 'envsubst < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
             }
@@ -166,19 +163,18 @@ pipeline {
 
         stage('k8s-deploy') {
             steps {
-                //sh 'cd lab2/development'
                 sh 'kubectl apply -f lab2/development/00-employee-namespaces.yaml'
-                /*sh 'kubectl apply -f 01-employee-resource-quota.yaml'
-                sh 'kubectl apply -f 02-employee-externalservice-keycloak.yaml'
-                sh 'kubectl apply -f 02-employee-externalservice-mysql.yaml'
-                sh 'kubectl apply -f 03-employee-persistentvolume.yaml'
-                sh 'kubectl apply -f 04-employee-persistentvolumeclaim.yaml'
-                sh 'kubectl apply -f 05-employee-sealed-secrets-application.yaml'
-                sh 'kubectl apply -f 06-employees-configmap.yaml'
-                sh 'kubectl apply -f 07-employee-deployment-version.yaml'
-                sh 'kubectl apply -f 08-employee-service.yaml'
-                sh 'kubectl apply -f 09-employee-sealed-secrets-tls.yaml'
-                sh 'kubectl apply -f 10-employee-ingress.yaml'*/
+                sh 'kubectl apply -f lab2/development/01-employee-resource-quota.yaml'
+                sh 'kubectl apply -f lab2/development/02-employee-externalservice-keycloak.yaml'
+                sh 'kubectl apply -f lab2/development/02-employee-externalservice-mysql.yaml'
+                sh 'kubectl apply -f lab2/development/03-employee-persistentvolume.yaml'
+                sh 'kubectl apply -f lab2/development/04-employee-persistentvolumeclaim.yaml'
+                sh 'kubectl apply -f lab2/development/05-employee-sealed-secrets-application.yaml'
+                sh 'kubectl apply -f lab2/development/06-employees-configmap.yaml'
+                sh 'kubectl apply -f lab2/development/07-employee-deployment-version.yaml'
+                sh 'kubectl apply -f lab2/development/08-employee-service.yaml'
+                sh 'kubectl apply -f lab2/development/09-employee-sealed-secrets-tls.yaml'
+                sh 'kubectl apply -f lab2/development/10-employee-ingress.yaml'
             }
         }
 
