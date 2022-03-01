@@ -164,11 +164,11 @@ pipeline {
             }
         }
 
-        /*stage('k8s-deploy') {
+        stage('k8s-deploy') {
             steps {
-                sh 'cd /tmp/k8s/lab2/development'
-                sh 'kubectl apply -f 00-employee-namespaces.yaml'
-                sh 'kubectl apply -f 01-employee-resource-quota.yaml'
+                //sh 'cd lab2/development'
+                sh 'kubectl apply -f lab2/development/00-employee-namespaces.yaml'
+                /*sh 'kubectl apply -f 01-employee-resource-quota.yaml'
                 sh 'kubectl apply -f 02-employee-externalservice-keycloak.yaml'
                 sh 'kubectl apply -f 02-employee-externalservice-mysql.yaml'
                 sh 'kubectl apply -f 03-employee-persistentvolume.yaml'
@@ -178,9 +178,9 @@ pipeline {
                 sh 'kubectl apply -f 07-employee-deployment-version.yaml'
                 sh 'kubectl apply -f 08-employee-service.yaml'
                 sh 'kubectl apply -f 09-employee-sealed-secrets-tls.yaml'
-                sh 'kubectl apply -f 10-employee-ingress.yaml'
+                sh 'kubectl apply -f 10-employee-ingress.yaml'*/
             }
-        }*/
+        }
 
 	}
 
