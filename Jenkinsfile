@@ -42,7 +42,7 @@ pipeline {
 	}
 
 	stages {
-	       stage("initialization") {
+	    /*stage("initialization") {
 		       steps {
                    sh "mvn --version"
                    sh "java -version"
@@ -149,21 +149,21 @@ pipeline {
                 	sh 'docker rmi $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker logout'
 			}
-		}
+		}*/
 
         stage('k8s-setup') {
             steps {
                 sh 'kubectl cluster-info'
                 sh 'kubectl config view'
-                sh 'cd /tmp'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
+                sh 'pwd'
                 sh 'cd lab2/development'
                 sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 sh 'envsubst < 07-employee-deployment.yaml > 07-employee-deployment-version.yaml'
             }
         }
 
-        stage('k8s-deploy') {
+        /*stage('k8s-deploy') {
             steps {
                 sh 'cd /tmp/k8s/lab2/development'
                 sh 'kubectl apply -f 00-employee-namespaces.yaml'
@@ -179,7 +179,7 @@ pipeline {
                 sh 'kubectl apply -f 09-employee-sealed-secrets-tls.yaml'
                 sh 'kubectl apply -f 10-employee-ingress.yaml'
             }
-        }
+        }*/
 
 	}
 
