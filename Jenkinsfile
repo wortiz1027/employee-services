@@ -92,7 +92,7 @@ pipeline {
 			}
 		}
 
-		/*stage('reports') {
+		stage('reports') {
 			parallel {
 				stage('ut-reports') {
 					steps {
@@ -100,14 +100,14 @@ pipeline {
 						  }
 				}
 
-				stage('it-reports') {
+				/*stage('it-reports') {
 					steps {
 			         		junit 'target/failsafe-reports/*.xml'
 			         	  }
-				}
+				}*/
 			}
 		}
-
+/*
 		stage('docker') {
 			environment {
                    SYSTEM_TIME_FORMATED = sh (returnStdout: true, script: "date '+%Y-%m-%d %H:%M:%S'").trim()
