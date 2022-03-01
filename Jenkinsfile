@@ -156,10 +156,11 @@ pipeline {
                 sh 'kubectl cluster-info'
                 sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
-                sh 'pwd'
                 sh 'cd lab2/development'
+                sh 'pwd'
+                sh 'ls -lah'
                 sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-                sh 'envsubst < 07-employee-deployment.yaml > 07-employee-deployment-version.yaml'
+                sh 'envsubst < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
             }
         }
 
