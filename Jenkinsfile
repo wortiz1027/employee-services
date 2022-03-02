@@ -144,9 +144,7 @@ pipeline {
 
 		stage('clean') {
 			steps {
-                	sh 'mvn clean'environment {
-                   ENABLE_AUTH = ‘false’                                 //can be used in this stage only
-              }
+                	sh 'mvn clean'
                 	sh 'docker rmi $PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker rmi $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker logout'
@@ -155,7 +153,7 @@ pipeline {
 
         stage('k8s-setup') {
             environment {
-                    IMAGE_NAME = '$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                IMAGE_NAME = '$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
             }
             steps {
                 sh 'kubectl cluster-info'
