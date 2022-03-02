@@ -42,7 +42,7 @@ pipeline {
 	}
 
 	stages {
-	    /*stage("initialization") {
+	    stage("initialization") {
 		       steps {
                    sh "mvn --version"
                    sh "java -version"
@@ -151,11 +151,11 @@ pipeline {
                 	sh 'docker rmi $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker logout'
 			}
-		}*/
+		}
 
         stage('k8s-setup') {
             environment {
-                    IMAGE_NAME = 'wortiz1027/employee-services:v1.0.1-20220301184042'
+                    IMAGE_NAME = '$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
             }
             steps {
                 sh 'kubectl cluster-info'
