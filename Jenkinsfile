@@ -42,7 +42,7 @@ pipeline {
 	}
 
 	stages {
-	    stage("initialization") {
+	    /*stage("initialization") {
 		       steps {
                    sh "mvn --version"
                    sh "java -version"
@@ -144,19 +144,24 @@ pipeline {
 
 		stage('clean') {
 			steps {
-                	sh 'mvn clean'
+                	sh 'mvn clean'environment {
+                   ENABLE_AUTH = ‘false’                                 //can be used in this stage only
+              }
                 	sh 'docker rmi $PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker rmi $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker logout'
 			}
-		}
+		}*/
 
         stage('k8s-setup') {
+            environment {
+                    IMAGE_NAME = 'wortiz1027/employee-services:v1.0.1-20220301184042'
+            }
             steps {
                 sh 'kubectl cluster-info'
                 sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
-                sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                //sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 sh 'envsubst < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
                 sh 'kubectl delete namespace ns-development'
                 sh 'cat lab2/development/07-employee-deployment-version.yaml'
