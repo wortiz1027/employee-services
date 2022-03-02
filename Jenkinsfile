@@ -152,15 +152,15 @@ pipeline {
 		}
 
         stage('k8s-setup') {
-            environment {
+            /*environment {
                 IMAGE_NAME = '$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-            }
+            }*/
             steps {
                 sh 'kubectl cluster-info'
                 sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
-                //sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-                sh 'envsubst < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
+                sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
+                sh 'envsubst \$IMAGE_NAME < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
                 sh 'kubectl delete namespace ns-development'
                 sh 'cat lab2/development/07-employee-deployment-version.yaml'
             }
