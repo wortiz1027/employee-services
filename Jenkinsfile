@@ -156,7 +156,7 @@ pipeline {
                 sh 'kubectl cluster-info'
                 sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
-                sh 'export IMAGE_NAME="wortiz1027/employee-services:v1.0.2-20220301203841'
+                sh 'export IMAGE_NAME=wortiz1027/employee-services:v1.0.2-20220301203841'
                 //sh 'cat configuration.env'
                 //sh 'source configuration.env'
                 sh 'envsubst ${IMAGE_NAME} < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
