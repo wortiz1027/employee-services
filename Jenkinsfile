@@ -40,9 +40,9 @@ pipeline {
 		PRIVATE_DOCKER_CREDENTIAL = "NEXUS-CREDENTIALS"
 		SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
 	}
-/*
+
 	stages {
-	    stage("initialization") {
+/*	    stage("initialization") {
 		       steps {
                    sh "mvn --version"
                    sh "java -version"
