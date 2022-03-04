@@ -170,7 +170,7 @@ pipeline {
                 //sh 'envsubst  < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
                 //sh 'envsubst < lab2/development/07-employee-deployment.yaml'
                 sh '''
-                    sed -i 's|${IMAGE_NAME}|wortiz1027/employee-services:v1.0.2-20220301203841|g' 07-employee-deployment.yaml
+                    sed -i 's|${IMAGE_NAME}|wortiz1027/employee-services:v1.0.2-20220301203841|g' lab2/development/07-employee-deployment.yaml
                 '''
                 //sh 'kubectl delete namespace ns-development'
                 sh 'cat lab2/development/07-employee-deployment.yaml'
