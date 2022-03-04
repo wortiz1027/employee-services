@@ -40,7 +40,7 @@ pipeline {
 		PRIVATE_DOCKER_CREDENTIAL = "NEXUS-CREDENTIALS"
 		SYSTEM_TIME = sh (returnStdout: true, script: "date '+%Y%m%d%H%M%S'").trim()
 	}
-
+/*
 	stages {
 	    stage("initialization") {
 		       steps {
@@ -149,23 +149,22 @@ pipeline {
                 	sh 'docker rmi $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker logout'
 			}
-		}
+		}*/
 
         stage('k8s-setup') {
-            /*environment {
-                IMAGE_NAME = '$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-            }*/
             steps {
                 sh 'kubectl cluster-info'
                 sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
-                sh 'export IMAGE_NAME=$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
-                sh 'envsubst \$IMAGE_NAME < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
+                sh 'echo "export IMAGE_NAME="wortiz1027/employee-services:v1.0.2-20220301203841 > .env'
+                sh 'cat .env'
+                sh 'source .env'
+                //sh 'envsubst \$IMAGE_NAME < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
                 sh 'kubectl delete namespace ns-development'
                 sh 'cat lab2/development/07-employee-deployment-version.yaml'
             }
         }
-
+/*
         stage('k8s-deploy') {
             steps {
                 sh 'export'
@@ -183,7 +182,7 @@ pipeline {
                 sh 'kubectl apply -f lab2/development/09-employee-sealed-secrets-tls.yaml'
                 sh 'kubectl apply -f lab2/development/10-employee-ingress.yaml'
             }
-        }
+        }*/
 
 	}
 
