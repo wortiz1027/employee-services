@@ -42,7 +42,7 @@ pipeline {
 	}
 
 	stages {
-/*	    stage("initialization") {
+	    stage("initialization") {
 		       steps {
                    sh "mvn --version"
                    sh "java -version"
@@ -149,34 +149,21 @@ pipeline {
                 	sh 'docker rmi $PRIVATE_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"'
                 	sh 'docker logout'
 			}
-		}*/
+		}
 
         stage('k8s-setup') {
             steps {
                 sh 'kubectl cluster-info'
                 sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
-                //sh 'echo "export IMAGE_NAME="wortiz1027/employee-services:v1.0.2-20220301203841 >> lab2/development/configuration.env'
-                //sh 'export'
-                //sh '''
-                //    #!/bin/bash
-                //    source lab2/development/configuration.env
-                //'''
-                //sh 'export'
-                //sh 'pwd'
-                //sh 'ls -lah'
-                //sh 'cat lab2/development/configuration.env'
-                //sh 'source configuration.env'
-                //sh 'envsubst  < lab2/development/07-employee-deployment.yaml > lab2/development/07-employee-deployment-version.yaml'
-                //sh 'envsubst < lab2/development/07-employee-deployment.yaml'
                 sh '''
                     sed -i 's|${IMAGE_NAME}|wortiz1027/employee-services:v1.0.2-20220301203841|g' lab2/development/07-employee-deployment.yaml
                 '''
-                //sh 'kubectl delete namespace ns-development'
+                sh 'kubectl delete namespace ns-development'
                 sh 'cat lab2/development/07-employee-deployment.yaml'
             }
         }
-/*
+
         stage('k8s-deploy') {
             steps {
                 sh 'export'
@@ -188,13 +175,13 @@ pipeline {
                 sh 'kubectl apply -f lab2/development/04-employee-persistentvolumeclaim.yaml'
                 sh 'kubectl apply -f lab2/development/05-employee-sealed-secrets-application.yaml'
                 sh 'kubectl apply -f lab2/development/06-employees-configmap.yaml'
-                sh 'cat lab2/development/07-employee-deployment-version.yaml'
-                sh 'kubectl apply -f lab2/development/07-employee-deployment-version.yaml'
+                sh 'cat lab2/development/07-employee-deployment.yaml'
+                sh 'kubectl apply -f lab2/development/07-employee-deployment.yaml'
                 sh 'kubectl apply -f lab2/development/08-employee-service.yaml'
                 sh 'kubectl apply -f lab2/development/09-employee-sealed-secrets-tls.yaml'
                 sh 'kubectl apply -f lab2/development/10-employee-ingress.yaml'
             }
-        }*/
+        }
 
 	}
 
