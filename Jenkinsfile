@@ -157,6 +157,12 @@ pipeline {
                 sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
                 sh 'echo "export IMAGE_NAME="wortiz1027/employee-services:v1.0.2-20220301203841 >> lab2/development/configuration.env'
+                sh 'export'
+                sh '''
+                    #!/bin/bash
+                    source lab2/development/configuration.env
+                '''
+                sh 'export'
                 sh 'pwd'
                 sh 'ls -lah'
                 sh 'cat lab2/development/configuration.env'
