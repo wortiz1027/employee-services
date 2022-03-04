@@ -42,7 +42,7 @@ pipeline {
 	}
 
 	stages {
-	    stage("initialization") {
+/*	    stage("initialization") {
 		       steps {
                    sh "mvn --version"
                    sh "java -version"
@@ -150,20 +150,20 @@ pipeline {
                 	sh 'docker logout'
 			}
 		}
-
+*/
         stage('k8s-setup') {
             steps {
-                sh 'kubectl cluster-info'
-                sh 'kubectl config view'
+                //sh 'kubectl cluster-info'
+                //sh 'kubectl config view'
                 gitUtils "master", "git@github.com:wortiz1027/k8s.git", 'GITHUB-LOGIN'
-                sh '''
-                    sed -i 's|${IMAGE_NAME}|$PUBLIC_REGISTRY/$PROJECT_NAME:"v$PARAM_BUILD_VERSION-$SYSTEM_TIME"' lab2/development/07-employee-deployment.yaml
-                '''
-                sh 'kubectl delete namespace ns-development'
+                sh """
+                    sed -i 's|${IMAGE_NAME}|$PUBLIC_REGISTRY/$PROJECT_NAME:v$PARAM_BUILD_VERSION-$SYSTEM_TIME' lab2/development/07-employee-deployment.yaml
+                """
+                //sh 'kubectl delete namespace ns-development'
                 sh 'cat lab2/development/07-employee-deployment.yaml'
             }
         }
-
+/*
         stage('k8s-deploy') {
             steps {
                 sh 'export'
@@ -182,7 +182,7 @@ pipeline {
                 sh 'kubectl apply -f lab2/development/10-employee-ingress.yaml'
             }
         }
-
+*/
 	}
 
 	post {
