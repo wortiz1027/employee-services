@@ -41,7 +41,7 @@ class EmployeeServiceUTest {
 
         var result = this.underTest.employeesInformations(pageable());
 
-        assertThat(Boolean.TRUE).isEqualTo(result.isPresent());
+        assertThat(Boolean.FALSE).isEqualTo(result.isPresent());
     }
 
     @Test
